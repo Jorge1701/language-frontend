@@ -83,3 +83,8 @@ export function getRightConjugationForPronoun(pronoun: Pronoun, verbConjugations
 export function mapEnum(value: string, enumType: any): any {
 	return enumType[value as keyof typeof enumType];
 }
+
+export function capFirst(str: string): string {
+  if (str.length === 0) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}

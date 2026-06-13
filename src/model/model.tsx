@@ -7,11 +7,17 @@ export interface VerbConjugations {
   tpp: string;
 }
 
+export interface ExerciseExample {
+  pt: string;
+  es: string;
+}
+
 export interface VerbExercise {
   tense: Tense;
-  pronoun: Pronoun;
+  pronoun: string;
   verb: string;
   conjugation: string;
+  example?: ExerciseExample;
 }
 
 export enum Tense {
