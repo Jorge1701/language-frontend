@@ -1,6 +1,6 @@
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import { getSpecificPronounText, getTenseText } from "../utils/utils";
-import { ExerciseInfo, ExerciseResult } from "../model/model";
+import { ExerciseResult, VerbExercise } from "../model/model";
 import { useState, useEffect, useRef } from "react";
 
 enum ExerciseStatus {
@@ -10,7 +10,7 @@ enum ExerciseStatus {
 }
 
 export function Exercise(props: {
-  exercise: ExerciseInfo,
+  exercise: VerbExercise,
   next: (result: ExerciseResult) => void,
   finish: () => void,
 }) {
@@ -26,7 +26,7 @@ export function Exercise(props: {
 
   const check = () => {
     if (status === ExerciseStatus.NEW && props.exercise) {
-      if (props.exercise.correct === input.toLowerCase().trim()) {
+      if (props.exercise.conjugation === input.toLowerCase().trim()) {
         setStatus(ExerciseStatus.SUCCESS)
       } else {
         setStatus(ExerciseStatus.FAIL)
@@ -73,7 +73,7 @@ export function Exercise(props: {
       { status === ExerciseStatus.FAIL && (
   	    <Grid size={{ xs: 12 }}>
           <Typography align="center" variant="h5" color="error" sx={{ fontWeight: 700 }}>Incorrecto!</Typography>
-          <Typography align="center" variant="h6">Respuesta: { pronounText } { props.exercise.correct }</Typography>
+          <Typography align="center" variant="h6">Respuesta: { pronounText } { props.exercise.conjugation }</Typography>
         </Grid>
       ) }
 

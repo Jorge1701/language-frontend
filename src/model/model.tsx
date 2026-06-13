@@ -7,17 +7,11 @@ export interface VerbConjugations {
   tpp: string;
 }
 
-export interface VerbInfo {
-  type: string;
-  infinitive: string;
-  present_participle: string;
-  past_participle: string;
-  simple_present: VerbConjugations;
-  imperfect_past: VerbConjugations;
-  simple_past: VerbConjugations;
-  past_perfect: VerbConjugations;
-  simple_future: VerbConjugations;
-  conditional: VerbConjugations;
+export interface VerbExercise {
+  tense: Tense;
+  pronoun: Pronoun;
+  verb: string;
+  conjugation: string;
 }
 
 export enum Tense {
@@ -38,25 +32,11 @@ export enum Pronoun {
   THIRD_PERSON_PLURAL,
 }
 
-export class ExerciseInfo {
-  verb: string
-  tense: Tense
-  pronoun: Pronoun
-  correct: string
-
-  constructor(verb: string, tense: Tense, pronoun: Pronoun, correct: string) {
-    this.verb = verb
-    this.tense = tense
-    this.pronoun = pronoun
-    this.correct = correct
-  }
-}
-
 export class ExerciseResult {
-  exerciseInfo: ExerciseInfo
+  exerciseInfo: VerbExercise
   response: string
 
-  constructor(exerciseInfo: ExerciseInfo, response: string) {
+  constructor(exerciseInfo: VerbExercise, response: string) {
     this.exerciseInfo = exerciseInfo
     this.response = response
   }

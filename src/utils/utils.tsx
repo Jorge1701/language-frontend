@@ -1,4 +1,4 @@
-import { Pronoun, Tense, VerbConjugations, VerbInfo } from "../model/model"
+import { Pronoun, Tense, VerbConjugations } from "../model/model"
 
 export function getRandom(max: number): number {
   return Math.floor(Math.random() * max)
@@ -63,23 +63,6 @@ export function getSpecificPronounText(pronoun: Pronoun): string {
   }
 }
 
-export function getRightConjugation(tense: Tense, pronoun: Pronoun, verbInfo: VerbInfo): string {
-  switch (tense) {
-    case Tense.SIMPLE_PRESENT:
-      return getRightConjugationForPronoun(pronoun, verbInfo.simple_present)
-    case Tense.IMPERFECT_PAST:
-      return getRightConjugationForPronoun(pronoun, verbInfo.imperfect_past)
-    case Tense.SIMPLE_PAST:
-      return getRightConjugationForPronoun(pronoun, verbInfo.simple_past)
-    case Tense.PAST_PERFECT:
-      return getRightConjugationForPronoun(pronoun, verbInfo.past_perfect)
-    case Tense.SIMPLE_FUTURE:
-      return getRightConjugationForPronoun(pronoun, verbInfo.simple_future)
-    case Tense.CONDITIONAL:
-      return getRightConjugationForPronoun(pronoun, verbInfo.conditional)
-  }
-}
-
 export function getRightConjugationForPronoun(pronoun: Pronoun, verbConjugations: VerbConjugations): string {
   switch (pronoun) {
     case Pronoun.FIRST_PERSON_SINGULAR:
@@ -95,4 +78,8 @@ export function getRightConjugationForPronoun(pronoun: Pronoun, verbConjugations
     case Pronoun.THIRD_PERSON_PLURAL:
     	return verbConjugations.tpp
   }
+}
+
+export function mapEnum(value: string, enumType: any): any {
+	return enumType[value as keyof typeof enumType];
 }
