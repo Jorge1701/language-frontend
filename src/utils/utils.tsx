@@ -13,7 +13,6 @@ export function getEnumValues(e: any): number[] {
 }
 
 export function getTenseText(tense: Tense): string {
-  console.log(typeof tense)
   switch (tense) {
     case Tense.SIMPLE_PRESENT:
       return "Presente"
