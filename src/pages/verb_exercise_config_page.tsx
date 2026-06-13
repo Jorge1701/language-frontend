@@ -85,7 +85,7 @@ export default function VerbExerciseConfigPage() {
   const nextExercise = async () => {
     const [tense, pronoun] = getTenseAndPronoun()
     const verbExercise = await getRandomVerb(Tense[tense], Pronoun[pronoun])
-    console.log(verbExercise)
+
     setExercise(verbExercise)
     setLoading(false)
   }
