@@ -1,5 +1,5 @@
-import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
-import { getSpecificPronounText, getTenseText } from "../utils/utils";
+import { Alert, Button, Divider, Grid, Stack, TextField, Typography } from "@mui/material";
+import { capFirst, getSpecificPronounText, getTenseText } from "../utils/utils";
 import { ExerciseResult, VerbExercise } from "../model/model";
 import { useState, useEffect, useRef } from "react";
 
@@ -16,11 +16,9 @@ export function Exercise(props: {
 }) {
   const [status, setStatus] = useState(ExerciseStatus.NEW)
   const [input, setInput] = useState('')
-  const [pronounText, setPronounText] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    setPronounText(getSpecificPronounText(props.exercise.pronoun))
     inputRef.current?.focus()
   }, [props.exercise])
 
@@ -33,7 +31,6 @@ export function Exercise(props: {
       }
     } else {
       setInput('')
-      setPronounText('')
       setStatus(ExerciseStatus.NEW)
 
       props.next(new ExerciseResult(props.exercise, input))
@@ -47,10 +44,46 @@ export function Exercise(props: {
       </Grid>
 
       <Grid size={{ xs: 12 }}>
-        <Stack direction="row" spacing={2}>
-          <Typography variant="h6">{ pronounText }</Typography>
-          <Typography variant="h6">({ props.exercise.verb })</Typography>
-        </Stack>
+          { props.exercise.example ? (
+            <Typography variant="subtitle1">
+              {props.exercise.example?.pt.split(props.exercise.conjugation)[0]}
+              {status === ExerciseStatus.NEW && `(${props.exercise.verb}) ____`}
+              {status === ExerciseStatus.SUCCESS && (
+                <span style={{ fontWeight: 'bold', color: '#4caf50' }}>
+                  {props.exercise.conjugation}
+                </span>
+              )}
+              {status === ExerciseStatus.FAIL && (
+                <span style={{ fontWeight: 'bold', color: '#d32f2f' }}>
+                  {props.exercise.conjugation}
+                </span>
+              )}
+              {props.exercise.example?.pt.split(props.exercise.conjugation)[1]}
+            </Typography>
+          ) : (
+            <Typography variant="subtitle1">
+              {capFirst(props.exercise.pronoun)}{' '}
+              {status === ExerciseStatus.NEW && `(${props.exercise.verb}) ____`}
+              {status === ExerciseStatus.SUCCESS && (
+                <span style={{ fontWeight: 'bold', color: '#4caf50' }}>
+                  {props.exercise.conjugation}
+                </span>
+              )}
+              {status === ExerciseStatus.FAIL && (
+                <span style={{ fontWeight: 'bold', color: '#d32f2f' }}>
+                  {props.exercise.conjugation}
+                </span>
+              )}
+            </Typography>
+          ) }
+          { status !== ExerciseStatus.NEW && props.exercise.example && (
+            <div>
+              <Divider />
+              <Typography variant="subtitle1">
+                {props.exercise.example.es}
+              </Typography>
+            </div>
+          ) }
       </Grid>
 
       <Grid size={{ xs: 12 }}>
@@ -63,19 +96,6 @@ export function Exercise(props: {
           onChange={ (e) => setInput(e.target.value) }
           onKeyDown={ (e) => e.key === "Enter" && check() } />
       </Grid>
-
-      { status === ExerciseStatus.SUCCESS && (
-        <Grid size={{ xs: 12 }}>
-          <Typography align="center" variant="h5" color="success" sx={{ fontWeight: 700 }}>Correcto!</Typography>
-        </Grid>
-      ) }
-
-      { status === ExerciseStatus.FAIL && (
-  	    <Grid size={{ xs: 12 }}>
-          <Typography align="center" variant="h5" color="error" sx={{ fontWeight: 700 }}>Incorrecto!</Typography>
-          <Typography align="center" variant="h6">Respuesta: { pronounText } { props.exercise.conjugation }</Typography>
-        </Grid>
-      ) }
 
       <Grid size={{ xs: 12, md: 6 }}>
         <Button

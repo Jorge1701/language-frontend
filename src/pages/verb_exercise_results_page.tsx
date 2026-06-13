@@ -2,7 +2,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Divider, Li
 import { useNavigate } from "react-router-dom"
 import { getSessions } from "../utils/memory"
 import { ExpandMore } from "@mui/icons-material"
-import { getPronounText, getTenseText } from "../utils/utils"
+import { capFirst, getPronounText, getTenseText } from "../utils/utils"
 
 export default function VerbExerciseResultPage() {
   const navigate = useNavigate()
@@ -30,7 +30,7 @@ export default function VerbExerciseResultPage() {
                         [{getTenseText(result.exerciseInfo.tense)}]
                       </Typography>
                       <Typography>
-                        {getPronounText(result.exerciseInfo.pronoun)}
+                        {capFirst(result.exerciseInfo.pronoun)}
                         {' '}
                         ({result.exerciseInfo.verb})
                       </Typography>

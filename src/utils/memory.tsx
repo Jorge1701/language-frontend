@@ -1,8 +1,8 @@
 import { format } from "date-fns";
 import { ExerciseResult, Session } from "../model/model";
 
-const CURR_SESSION_KEY = 'curr_session'
-const SESSION_HISTORY_KEY = 'session_history'
+const CURR_SESSION_KEY = 'curr_session_v2'
+const SESSION_HISTORY_KEY = 'session_history_v2'
 const MAX_SESSIONS = 100
 const DATE_FORMAT = "yyyy-MM-dd HH:mm"
 

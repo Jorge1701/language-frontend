@@ -68,16 +68,21 @@ export default function VerbExerciseConfigPage() {
     var res: VerbExercise
     if (verbListTab === 0) {
       const response = await fetch(`${API_BASE_URL}/verb/exercise?tense=${tense}&pronoun=${pronoun}&random_limit=${topVerbs}`)
+      if (!response.ok) {
+        return getRandomVerb(tense, pronoun)
+      }
       res =  await (response.json() as Promise<VerbExercise>)
     } else {
       const list = verbList.toLowerCase().split(/[,\n ]/).filter(v => v.trim() !== '')
       const verb = list[getRandom(list.length)]
       const response = await fetch(`${API_BASE_URL}/verb/exercise?tense=${tense}&pronoun=${pronoun}&verb=${verb}`)
+      if (!response.ok) {
+        return getRandomVerb(tense, pronoun)
+      }
       res = await (response.json() as Promise<VerbExercise>)
     }
 
     res.tense = mapEnum(res.tense.toString(), Tense)
-    res.pronoun = mapEnum(res.pronoun.toString(), Pronoun)
 
     return res
   }
