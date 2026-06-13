@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, Checkbox, CircularProgress, Divider, FormControlLabel, Stack, Tab, Tabs, TextField, Typography } from "@mui/material"
-import { ExerciseInfo, ExerciseResult, Pronoun, Tense, VerbInfo } from "../model/model"
-import { getEnumValues, getPronounText, getRandom, getRightConjugation, getTenseText } from "../utils/utils"
+import { ExerciseResult, Pronoun, Tense, VerbExercise } from "../model/model"
+import { getEnumValues, getPronounText, getRandom, getTenseText, mapEnum } from "../utils/utils"
 import { Exercise } from "../components/exercise"
 import { ExpandMore } from "@mui/icons-material"
 import { API_BASE_URL } from "../config"
@@ -21,7 +21,7 @@ export default function VerbExerciseConfigPage() {
   const [checkedTenses, setCheckedTenses] = useState([true, false, true, false, false, false])
   const [checkedPronouns, setCheckedPronouns] = useState([true, false, true, true, false, true])
 
-  const [exercise, setExercise] = useState<ExerciseInfo | null>(null)
+  const [exercise, setExercise] = useState<VerbExercise | null>(null)
 
   useEffect(() => {
     deleteCurrentSession()
@@ -64,25 +64,29 @@ export default function VerbExerciseConfigPage() {
     return [tense, pronoun]
   }
 
-  const getRandomVerb = async (): Promise<VerbInfo> => {
+  const getRandomVerb = async (tense: String, pronoun: String): Promise<VerbExercise> => {
+    var res: VerbExercise
     if (verbListTab === 0) {
-      const response = await fetch(`${API_BASE_URL}/verb/random?top_searched=${topVerbs}`)
-      return await (response.json() as Promise<VerbInfo>)
+      const response = await fetch(`${API_BASE_URL}/verb/exercise?tense=${tense}&pronoun=${pronoun}&random_limit=${topVerbs}`)
+      res =  await (response.json() as Promise<VerbExercise>)
     } else {
       const list = verbList.toLowerCase().split(/[,\n ]/).filter(v => v.trim() !== '')
       const verb = list[getRandom(list.length)]
-      const response = await fetch(`${API_BASE_URL}/verb/${verb}`)
-      return await (response.json() as Promise<VerbInfo>)
+      const response = await fetch(`${API_BASE_URL}/verb/exercise?tense=${tense}&pronoun=${pronoun}&verb=${verb}`)
+      res = await (response.json() as Promise<VerbExercise>)
     }
+
+    res.tense = mapEnum(res.tense.toString(), Tense)
+    res.pronoun = mapEnum(res.pronoun.toString(), Pronoun)
+
+    return res
   }
 
   const nextExercise = async () => {
-    setLoading(true)
     const [tense, pronoun] = getTenseAndPronoun()
-    const verbInfo = await getRandomVerb()
-    const correct = getRightConjugation(tense, pronoun, verbInfo)
-
-    setExercise(new ExerciseInfo(verbInfo.infinitive, tense, pronoun, correct))
+    const verbExercise = await getRandomVerb(Tense[tense], Pronoun[pronoun])
+    console.log(verbExercise)
+    setExercise(verbExercise)
     setLoading(false)
   }
 

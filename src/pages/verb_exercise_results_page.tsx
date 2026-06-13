@@ -19,8 +19,8 @@ export default function VerbExerciseResultPage() {
               <AccordionDetails>
                 <Stack spacing={1}>
                   <Typography>Exercícios realizados: {session.results.length}</Typography>
-                  <Typography>Corretos: {session.results.filter(r => r.exerciseInfo.correct.toLowerCase() === r.response.toLowerCase().trim()).length}</Typography>
-                  <Typography>Incorretos: {session.results.filter(r => r.exerciseInfo.correct.toLowerCase() !== r.response.toLowerCase().trim()).length}</Typography>
+                  <Typography>Corretos: {session.results.filter(r => r.exerciseInfo.conjugation.toLowerCase() === r.response.toLowerCase().trim()).length}</Typography>
+                  <Typography>Incorretos: {session.results.filter(r => r.exerciseInfo.conjugation.toLowerCase() !== r.response.toLowerCase().trim()).length}</Typography>
                 </Stack>
                 <Stack>
                   { session.results.map((result, resultIndex) => (
@@ -35,9 +35,9 @@ export default function VerbExerciseResultPage() {
                         ({result.exerciseInfo.verb})
                       </Typography>
                       <Typography color="success">
-                        Resposta correta: <span className="bold">{result.exerciseInfo.correct.toLowerCase()}</span>
+                        Resposta correta: <span className="bold">{result.exerciseInfo.conjugation.toLowerCase()}</span>
                       </Typography>
-                      <Typography color={result.exerciseInfo.correct.toLowerCase() === result.response.toLowerCase().trim() ? 'success' : 'error'}>
+                      <Typography color={result.exerciseInfo.conjugation.toLowerCase() === result.response.toLowerCase().trim() ? 'success' : 'error'}>
                         Sua resposta: <span className="bold">{result.response.toLowerCase()}</span>
                       </Typography>
                     </Stack>
